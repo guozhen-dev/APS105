@@ -77,9 +77,9 @@ int main(int argc, char const *argv[]){
 	scanf("%c",&b[0]);getchar();
 	printf("Please enter the 2nd band of resistor 2: \n");
 	scanf("%c",&b[1]);getchar();
-	printf("Please enter the multiplier band of resistor 2:\n");
+	printf("Please enter the multiplier band of resistor 2: \n");
 	scanf("%c",&b[2]);getchar();
-	printf("Please enter the tolerance band of resistor 2:" );
+	printf("Please enter the tolerance band of resistor 2: \n" );
 	scanf("%c",&b[3]);getchar();
 	value2 = 10*find_value(b[0])+find_value(b[1]);
 	value2 *= pow(10,find_value(b[2]));
