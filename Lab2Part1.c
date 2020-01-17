@@ -1,3 +1,11 @@
+//Name : Guozhen Ding (1005760749)
+/*
+ * Lab Submission for APS105H1 
+ * Input : The daily rate and the rental period 
+ * Output : The total charge and days of free by using the given charge method 
+ * Assumption : All the input from the user is vaild
+ */
+
 #include <stdio.h>
 #define TAX 1.13
 #define freeRate 4
