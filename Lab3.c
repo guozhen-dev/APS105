@@ -17,11 +17,11 @@ int find_value(const char input){
 	return -1;
 }
 int val_proc(double value){	
-	if (log(value)/log(10) >= 6-eps){
+	if (log(value)/log(10) >= 6){
 		value *= 1e-6;
 		printf("%.2lf MOhms ",(double)value);
 		return 0;
-	} else if (log(value)/log(10) >= 3.0-eps ){
+	} else if (log(value)/log(10) >= 3.0 ){
 		value *= 1e-3;
 		printf("%.2lf KOhms ",(double)value);
 		return 0;
