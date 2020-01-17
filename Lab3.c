@@ -83,6 +83,8 @@ int main(int argc, char const *argv[]){
 	scanf("%c",&b[3]);getchar();
 	value2 = 10*find_value(b[0])+find_value(b[1]);
 	value2 *= pow(10,find_value(b[2]));
+
+	printf("Colour bands for resistor 1: \n");
 	if (find_value(a[0])<0 || find_value(a[0])>9){
 		printf("Invalid colour for the 1st band of resistor 1. Exiting the program...\n");
 		return 0;
@@ -100,8 +102,8 @@ int main(int argc, char const *argv[]){
 		return 0;
 	}
 
-	printf("Colour bands for resistor 1: \n%s %s %s %s\n",colors[find_value(a[0])].name,colors[find_value(a[1])].name,colors[find_value(a[2])].name,colors[find_value(a[3])].name);
-	
+	printf("%s %s %s %s\n",colors[find_value(a[0])].name,colors[find_value(a[1])].name,colors[find_value(a[2])].name,colors[find_value(a[3])].name);
+	printf("Colour bands for resistor 2: \n");
 	if (find_value(b[0])<0 || find_value(b[0])>9){
 		printf("Invalid colour for the 1st band of resistor 2. Exiting the program...\n");
 		return 0;
@@ -119,7 +121,7 @@ int main(int argc, char const *argv[]){
 		return 0;
 	}
 
-	printf("Colour bands for resistor 2: \n%s %s %s %s\n",colors[find_value(b[0])].name,colors[find_value(b[1])].name,colors[find_value(b[2])].name,colors[find_value(b[3])].name);
+	printf("%s %s %s %s\n",colors[find_value(b[0])].name,colors[find_value(b[1])].name,colors[find_value(b[2])].name,colors[find_value(b[3])].name);
 	printf("Value in ohms of resistor 1: " );val_proc((double)value1);printf("%s\n", colors[find_value(a[3])].tolerance);
 	printf("Value in ohms of resistor 2: " );val_proc((double)value2);printf("%s\n", colors[find_value(b[3])].tolerance);
 	printf("The Equivalent in series is ");val_proc(value1+value2); printf("\n");
