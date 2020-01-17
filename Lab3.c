@@ -79,7 +79,7 @@ int main(int argc, char const *argv[]){
 	scanf("%c",&b[1]);getchar();
 	printf("Please enter the multiplier band of resistor 2:\n");
 	scanf("%c",&b[2]);getchar();
-	printf("Please enter the tolerance band of resistor 2:\n" );
+	printf("Please enter the tolerance band of resistor 2:" );
 	scanf("%c",&b[3]);getchar();
 	value2 = 10*find_value(b[0])+find_value(b[1]);
 	value2 *= pow(10,find_value(b[2]));
@@ -118,7 +118,7 @@ int main(int argc, char const *argv[]){
 		printf("Invalid colour for the tolerance of resistor 2. Exiting the program...\n");
 		return 0;
 	}
-	
+
 	printf("Colour bands for resistor 2: \n%s %s %s %s\n",colors[find_value(b[0])].name,colors[find_value(b[1])].name,colors[find_value(b[2])].name,colors[find_value(b[3])].name);
 	printf("Value in ohms of resistor 1: " );val_proc((double)value1);printf("%s\n", colors[find_value(a[3])].tolerance);
 	printf("Value in ohms of resistor 2: " );val_proc((double)value2);printf("%s\n", colors[find_value(b[3])].tolerance);
