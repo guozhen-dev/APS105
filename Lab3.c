@@ -16,7 +16,6 @@ int find_value(const char input){
 	}
 	return -1;
 }
-
 int val_proc(double value){	
 	if (log(value)/log(10) >= 6-eps){
 		value *= 1e-6;
@@ -33,7 +32,6 @@ int val_proc(double value){
 
 	return -1;
 }
-
 int main(int argc, char const *argv[]){
 
 	strcpy(colors[0].name,"Black");
@@ -56,7 +54,6 @@ int main(int argc, char const *argv[]){
 	strcpy(colors[10].tolerance,"+/- 5.00%");
 	strcpy(colors[11].name,"Silver");
 	strcpy(colors[11].tolerance,"+/- 10.00%");
-
 	long long value1 = 0;	
 	char a[4] = {0,};
 	printf("Please enter the 1st band of resistor 1: \n");
@@ -67,10 +64,8 @@ int main(int argc, char const *argv[]){
 	scanf("%c",&a[2]);getchar();
 	printf("Please enter the tolerance band of resistor 1:\n");
 	scanf("%c",&a[3]);getchar();
-	
 	value1 = 10*find_value(a[0])+find_value(a[1]);
 	value1 *= pow(10,find_value(a[2]));
-
 	char b[4] = {0,};
 	long long value2 = 0;
 	printf("Please enter the 1st band of resistor 2: \n");
@@ -83,7 +78,6 @@ int main(int argc, char const *argv[]){
 	scanf("%c",&b[3]);getchar();
 	value2 = 10*find_value(b[0])+find_value(b[1]);
 	value2 *= pow(10,find_value(b[2]));
-
 	printf("Colour bands for resistor 1: \n");
 	if (find_value(a[0])<0 || find_value(a[0])>9){
 		printf("Invalid colour for the 1st band of resistor 1. Exiting the program...\n");
@@ -101,7 +95,6 @@ int main(int argc, char const *argv[]){
 		printf("Invalid colour for the tolerance of resistor 1. Exiting the program...\n");
 		return 0;
 	}
-
 	printf("%s %s %s %s\n",colors[find_value(a[0])].name,colors[find_value(a[1])].name,colors[find_value(a[2])].name,colors[find_value(a[3])].name);
 	printf("Colour bands for resistor 2: \n");
 	if (find_value(b[0])<0 || find_value(b[0])>9){
@@ -120,7 +113,6 @@ int main(int argc, char const *argv[]){
 		printf("Invalid colour for the tolerance of resistor 2. Exiting the program...\n");
 		return 0;
 	}
-
 	printf("%s %s %s %s\n",colors[find_value(b[0])].name,colors[find_value(b[1])].name,colors[find_value(b[2])].name,colors[find_value(b[3])].name);
 	printf("Value in ohms of resistor 1: " );val_proc((double)value1);printf("%s\n", colors[find_value(a[3])].tolerance);
 	printf("Value in ohms of resistor 2: " );val_proc((double)value2);printf("%s\n", colors[find_value(b[3])].tolerance);
