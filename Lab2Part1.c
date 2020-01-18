@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]){
     
     //Output the result 
     printf("Your total free day(s) in this rental is: %d\n",paidCircles);
-    printf("Your total charge including taxes is: %.2lf\n",totalCharge);
+    printf("The total charge including taxes is: %.2lf\n",totalCharge);
     
     return 0;
 }
