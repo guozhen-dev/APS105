@@ -9,7 +9,8 @@ struct {
 const double eps = 1e-5;
 int find_value(const char input){
 	char index[13]="kbroeguvywls";
-	for (int i = 0; i < 12; i++){
+	int i;
+	for ( i = 0; i < 12; i++){
 		if ( index[i] == input || index[i] == input + 32 ){
 			return i;
 		}
@@ -17,7 +18,7 @@ int find_value(const char input){
 	return -1;
 }
 int val_proc(double value){	
-	if (log(value)/log(10) >= 6-ewps){
+	if (log(value)/log(10) >= 6-eps){
 		value *= 1e-6;
 		printf("%.2lf MOhms ",(double)value);
 		return 0;
