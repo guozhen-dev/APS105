@@ -9,6 +9,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+long long value1 = 0;	
+long long value2 = 0;
 char a[4] = {0,};
 char b[4] = {0,};
 struct {
@@ -42,7 +44,7 @@ int find_value(const char input, int _type, int _num){
 		printf("\nInvalid colour for the tolerance band of resistor %d. Exiting the program...\n",_num);
 		exit(0);
 	}
-	return ret ;
+	return -1 ;
 }
 
 //----- function for process the value and print in the correct units -----// 
@@ -50,22 +52,17 @@ int val_proc(double value){
 	if (log10(value) >= 6.0-eps){
 		value *= 1e-6;
 		printf("%.2lf MOhms ",(double)value);
-		return 0;
 	} else if (log10(value) >= 3.0-eps ){
 		value *= 1e-3;
 		printf("%.2lf KOhms ",(double)value);
-		return 0;
 	}else {
 		printf("%.2lf Ohms ",(double)value);
-		return 0;
 	}
-
-	return -1;
+	return 0;
 }
 
 int main(int argc, char const *argv[]){
-	// init all the variables according to the given table
-	strcpy(colors[0].name,"Black");
+	strcpy(colors[0].name,"Black");														// init all the variables according to the given table
 	strcpy(colors[1].name,"Brown");
 	strcpy(colors[1].tolerance,"+/- 1.00%");
 	strcpy(colors[2].name,"Red");
@@ -86,10 +83,7 @@ int main(int argc, char const *argv[]){
 	strcpy(colors[11].name,"Silver");
 	strcpy(colors[11].tolerance,"+/- 10.00%");
 	
-	long long value1 = 0;	
-	long long value2 = 0;
-	//guide the user input 8 digit color and remove the extra '\n'
-	printf("Please enter the 1st band of resistor 1: \n");
+	printf("Please enter the 1st band of resistor 1: \n");								//guide the user input 8 digit color and remove the extra '\n'
 	scanf("%c",&a[0]);getchar();
 	printf("Please enter the 2nd band of resistor 1: \n");
 	scanf("%c",&a[1]);getchar();
@@ -106,14 +100,12 @@ int main(int argc, char const *argv[]){
 	printf("Please enter the tolerance band of resistor 2: \n" );
 	scanf("%c",&b[3]);getchar();
 	
-	//calc the values and check the vaildity of the input 
-	value1 = 10*find_value(a[0],0,0)+find_value(a[1],0,0);
+	value1 = 10*find_value(a[0],0,0)+find_value(a[1],0,0);								//calc the values and check the vaildity of the input 
 	value1 *= pow(10,find_value(a[2],0,0));
 	value2 = 10*find_value(b[0],0,0)+find_value(b[1],0,0);
 	value2 *= pow(10,find_value(b[2],0,0));
 	
-	//give out the colors 
-	printf("Colour bands for resistor 1: \n");
+	printf("Colour bands for resistor 1: \n");											//give out the colors 
 	printf("%s ",colors[find_value(a[0],1,1)].name);
 	printf("%s ",colors[find_value(a[1],2,1)].name);
 	printf("%s ",colors[find_value(a[2],3,1)].name);
@@ -123,7 +115,6 @@ int main(int argc, char const *argv[]){
 	printf("%s ",colors[find_value(b[1],2,2)].name);
 	printf("%s ",colors[find_value(b[2],3,2)].name);
 	printf("%s\n",colors[find_value(b[3],4,2)].name);
-	
 	
 	//do calc for the second part and output the answer
 	printf("Value in ohms of resistor 1: " );val_proc((double)value1);printf("%s\n", colors[find_value(a[3],0,0)].tolerance);
