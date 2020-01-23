@@ -1,5 +1,4 @@
-//Name : Guozhen Ding (1005760749)
-/*
+/* Name : Guozhen Ding (1005760749)
  * Lab Submission for APS105H1
  * Input : The letter represent the color of the resistant (8 letters)
  * Output : The color (in words) of the resistance and the resistance's value and tolorance \
@@ -12,14 +11,13 @@
 #include <string.h>
 char a[4] = {0,};
 char b[4] = {0,};
-
 struct {
 	char name[10];
 	char tolerance[15];
-}colors[13];//create the storage struct of the names and tolerances 
-const double eps = 1e-5; // infinite small value 
+}colors[13];																		//create the storage struct of the names and tolerances 
+const double eps = 1e-5; 															// infinite small value 
 
-//------ function for find a char and return its related value-----//
+//------ function for find a char and return its related value, and report it errors-----//
 int find_value(const char input, int _type, int _num){
 	char index[13]="kbroeguvywls";
 	int ret = -1 ;
@@ -28,7 +26,6 @@ int find_value(const char input, int _type, int _num){
 			return ret;
 		}
 	}
-	
 	if (_type == 1 && (ret == 12 || ret >9)){
 		printf("\nInvalid colour for the 1st band of resistor %d. Exiting the program...\n",_num);
 		exit(0);
@@ -91,7 +88,6 @@ int main(int argc, char const *argv[]){
 	
 	long long value1 = 0;	
 	long long value2 = 0;
-
 	//guide the user input 8 digit color and remove the extra '\n'
 	printf("Please enter the 1st band of resistor 1: \n");
 	scanf("%c",&a[0]);getchar();
@@ -116,12 +112,12 @@ int main(int argc, char const *argv[]){
 	value2 = 10*find_value(b[0],0,0)+find_value(b[1],0,0);
 	value2 *= pow(10,find_value(b[2],0,0));
 	
+	//give out the colors 
 	printf("Colour bands for resistor 1: \n");
 	printf("%s ",colors[find_value(a[0],1,1)].name);
 	printf("%s ",colors[find_value(a[1],2,1)].name);
 	printf("%s ",colors[find_value(a[2],3,1)].name);
 	printf("%s\n",colors[find_value(a[3],4,1)].name);
-	
 	printf("Colour bands for resistor 2: \n");
 	printf("%s ",colors[find_value(b[0],1,2)].name);
 	printf("%s ",colors[find_value(b[1],2,2)].name);
@@ -135,5 +131,4 @@ int main(int argc, char const *argv[]){
 	printf("The Equivalent in series is ");val_proc(value1+value2); printf("\n");
 	printf("The Equivalent in parallel is ");val_proc((double)value1*value2/(double)(value2+value1));printf("\n");
 	return 0;
-	
 }
