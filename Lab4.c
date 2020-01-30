@@ -25,7 +25,7 @@ double owedAmount(double interest, double owedFromPre, double Purchase, double P
 int main(int argc, char const * argv[]){
 	double last_owe,last_last_owe, payPM, purPM, interest,tot;
 	long long  N;
-	printf("Enter amount already owed on the card: ");
+	printf("Enter amount already owed on card: ");
 	scanf("%lf",&last_owe);
 	printf("Enter purchase amount per month: ");
 	scanf("%lf",&purPM);
