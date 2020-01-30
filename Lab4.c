@@ -11,7 +11,7 @@ double owedAmount(double interest, double owedFromPre, double Purchase, double P
 			tot_int += (owedFromPre+Purchase)*interest;
 		} else {
 			ret = 0 ;
-			tot_int += owedFromPre*interest;
+			// tot_int += owedFromPre*interest;
 		}
 	} else {
 		ret = Purchase - Payment > 0 ? (Purchase - Payment)*(1+interest)  : 0;
