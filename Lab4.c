@@ -29,7 +29,7 @@ int main(int argc, char const * argv[]){
 	scanf("%lf",&last_owe);
 	printf("Enter purchase amount per month: ");
 	scanf("%lf",&purPM);
-	printf("Enter payment amount per month ");
+	printf("Enter payment amount per month: ");
 	scanf("%lf",&payPM);
 	printf("Enter yearly interest rate as percent: ");
 	scanf("%lf",&interest);
