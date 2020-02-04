@@ -1,6 +1,6 @@
 #include "stdio.h"
 #include <math.h>
-const int N = 10000;
+const int N = 9000;
 double f(double y, double a, double b){
 	double ret = a*sqrt((1-(y-b)*(y-b)/b/b));
 	return ret;
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]){
 	scanf("%lf",&d);
 	d/=100;
 	trapezoidal_integral(d,N,w,h,l,&integral_result);
-	printf("Depth %.2lf cm : Volume %.2lf cubic meters\n",100*d,integral_result*l );
+	printf("Depth %.2lf cm : Volume %.3lf cubic meters\n",100*d,integral_result*l );
 
 	return 0;
 }
