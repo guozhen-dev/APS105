@@ -2,7 +2,7 @@
 #include <math.h>
 const int N = 10001;
 double f(double y, double a, double b){
-	double ret = 2*a*sqrt((1-(y-b)*(y-b)/b/b));
+	double ret = a*sqrt((1-(y-b)*(y-b)/b/b));
 	return ret;
 }
 void trapezoidal_integral(double depth, int n, double width, double height, double length, double* integral_result){
@@ -15,7 +15,7 @@ void trapezoidal_integral(double depth, int n, double width, double height, doub
 		else sum += 2 * f(i*delta,a,b);
 	}
 
-	*integral_result = delta/2 * sum ;
+	*integral_result = delta * sum ;
 	return;
 }
 int main(int argc, char const *argv[]){
