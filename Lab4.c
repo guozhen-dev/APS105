@@ -12,8 +12,8 @@ double tot_int=0;
 const double eps = 1e-4;								// declare global vars and constant
 
 
-inline double owedAmount(double interest, double owedFromPre, double Purchase, double Payment){
-	register double ret;
+double owedAmount(double interest, double owedFromPre, double Purchase, double Payment){
+	double ret;
 	if (owedFromPre > 0 ){
 		if (owedFromPre*(1+interest) + Purchase - Payment > 0 ){
 			ret = (owedFromPre*(1+interest) + Purchase*(1+interest) - Payment);
