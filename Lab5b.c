@@ -21,13 +21,13 @@ void trapezoidal_integral(double depth, int n, double width, double height, doub
 int main(int argc, char const *argv[]){
 	double w,h,l,d;
 	double integral_result;
-	printf("Enter the width of the tank (in meters):\n");
+	printf("Enter the width of the tank (in meters):");
 	scanf("%lf",&w);
-	printf("Enter the height of the tank (in meters):\n");
+	printf("Enter the height of the tank (in meters):");
 	scanf("%lf",&h);
-	printf("Enter the length of the tank (in meters):\n");
+	printf("Enter the length of the tank (in meters):");
 	scanf("%lf",&l);
-	printf("Enter the specific depth on the measuring stick (in centimeters): \n");
+	printf("Enter the specific depth on the measuring stick (in centimeters): ");
 	scanf("%lf",&d);
 	d/=100;
 	trapezoidal_integral(d,N,w,h,l,&integral_result);
