@@ -1,6 +1,6 @@
 #include "stdio.h"
 #include <math.h>
-const int N = 20000;
+const int N = 9999;
 double f(double y, double a, double b){
 	double ret = 2*a*sqrt((1-(y-b)*(y-b)/b/b));
 	return ret;
