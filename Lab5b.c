@@ -3,7 +3,6 @@
 const int N = 10000;
 double f(double y, double a, double b){
 	double ret = 2*a*sqrt((1-(y-b)*(y-b)/b/b));
-	printf("%lf\n", ret);
 	return ret;
 }
 void trapezoidal_integral(double depth, int n, double width, double height, double length, double* integral_result){
