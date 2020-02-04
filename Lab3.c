@@ -9,8 +9,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-long long value1 = 0;	
-long long value2 = 0;
+double value1 = 0;	
+double value2 = 0;
 char band1[4] = {0,};
 char band2[4] = {0,};
 struct {
@@ -25,7 +25,7 @@ int find_value(const char input, int _type, int _num){
 	int ret ;
 	for ( ret = 0; ret < 12; ret++){
 		if ( index[ret] == input || index[ret] == input + 32 ){
-			return ret;
+			break;
 		}
 	}
 	if (_type == 1 && (ret == 12 || ret >9)){
@@ -36,7 +36,9 @@ int find_value(const char input, int _type, int _num){
 		printf("\nInvalid colour for the 2nd band of resistor %d. Exiting the program...\n",_num);
 		exit(0);
 	}
-	if (_type == 3 && (ret == 12 || ret == 8 || ret == 9)){
+	if (_type == 3&& !_num && (ret >= 8)){
+		if (ret == 10) return -1;
+		if (ret == 11) return -2;
 		printf("\nInvalid colour for the multiplier band of resistor %d. Exiting the program...\n",_num);
 		exit(0);
 	}
@@ -44,7 +46,7 @@ int find_value(const char input, int _type, int _num){
 		printf("\nInvalid colour for the tolerance band of resistor %d. Exiting the program...\n",_num);
 		exit(0);
 	}
-	return -1 ;
+	return ret ;
 }
 //----- function for process the value and print in the correct units -----// 
 int val_proc(double value){	
@@ -100,9 +102,9 @@ int main(int argc, char const *argv[]){
 	scanf("%c",&band2[3]);getchar();
 	
 	value1 = 10*find_value(band1[0],0,0)+find_value(band1[1],0,0);						//calc the values and check the vaildity of the input 
-	value1 *= pow(10,find_value(band1[2],0,0));
+	value1 *= pow(10,find_value(band1[2],3,0));
 	value2 = 10*find_value(band2[0],0,0)+find_value(band2[1],0,0);
-	value2 *= pow(10,find_value(band2[2],0,0));
+	value2 *= pow(10,find_value(band2[2],3,0));
 	
 	printf("Colour bands for resistor 1: \n");									//give out the colors 
 	printf("%s ",colors[find_value(band1[0],1,1)].name);
