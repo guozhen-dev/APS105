@@ -31,7 +31,7 @@ inline double owedAmount(double interest, double owedFromPre, double Purchase, d
 int main(int argc, char const * argv[]){
 
 	//get user input 
-	register double last_owe,last_last_owe, payPM, purPM, interest,tot;
+	double last_owe,last_last_owe, payPM, purPM, interest,tot;
 	long long  N;
 	printf("Enter amount already owed on card: ");
 	scanf("%lf",&last_owe);
