@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]){
 	scanf("%lf",&d);
 	d/=100;
 	trapezoidal_integral(d,N,w,h,l,&integral_result);
-	printf("Depth %.2lf cm : Volume %.3lf cubic meters\n",100*d,integral_result*l );
+	printf("Depth %.2lf cm : Volume %.2lf cubic meters\n",100*d,integral_result*l );
 
 	return 0;
 }
