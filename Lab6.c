@@ -46,5 +46,6 @@ int main(int argc, char const *argv[])
 		}
 		puts("");
 	}
+	for (register int i = 0; i < 2*c-1 ; i++) putchar('-');
 	return 0;
 }
