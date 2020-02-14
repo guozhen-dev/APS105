@@ -19,7 +19,7 @@ void pr_number(int i , int j , int mapp[]){
 int main(int argc, char const *argv[])
 {
 	// freopen("in","r",stdin);
-	printf("Enter the number of rows:\nEnter the number of columns:\nEnter the probability p value:\n");
+	printf("Enter the number of rows: Enter the number of columns: Enter the probability p value: ");
 	scanf("%lld %lld %lf", &r, &c, &p);
 	int mapp[0x7ffff] = {0,};
 	for (register int i = 0; i < 2*c-1 ; i++) putchar('-');

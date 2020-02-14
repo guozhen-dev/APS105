@@ -1,0 +1,13 @@
+Enter the number of rows: Enter the number of columns: Enter the probability p value: -----
+* . * 
+. . . 
+. . . 
+. * . 
+. . * 
+-----
+
+* 2 * 
+1 2 1 
+1 1 1 
+1 * 2 
+1 2 * 
