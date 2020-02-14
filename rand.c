@@ -1,13 +1,14 @@
+#include <cstdio>
+#include<cstdlib>
 #include <ctime>
-#include <bits/stdc++.h>
+#include <iostream>
+
 using namespace std;
-int main(int argc, char **argv[]){
-		freopen("test.in","w",stdout);
+int main(int argc, char *argv[]){
 		srand(time(0));
 		cout<<(rand()%40000)/1000.0 <<' ';
 		cout<<(rand()%40000)/1000.0 <<' ';
 		cout<<(rand()%40000)/1000.0 <<' ';
 		cout<<(rand()%40000)/1000.0 <<' ';
-		cout << rand()%100 <<endl;
 }	
 		 
