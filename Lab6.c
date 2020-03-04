@@ -41,7 +41,7 @@ int main(int argc, char const *argv[])
 		}
 		puts("");
 	}
-
+	printline(c);
 
 
 	return 0;
