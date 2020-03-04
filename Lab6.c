@@ -1,49 +1,48 @@
 #include <stdio.h>
 #include <string.h>
 #include "Lab6.h"
-
-const int move[3]={-1,0,1};
-long long r,c;
-double p;
-void pr_number(int i , int j , int mapp[]){
-	long long  sum = 0 ;
-	for (int k = 0 ; k < 3; k++){
-		for (int l = 0 ; l < 3 ; l++){
-			if ((!i && !k) || (!j && !l) || (i==r-1 && k==2)||(j==c-1 && l==2) || (k==1 && l==1)) continue; 
-			sum += ( mapp[i+move[k]] >> (c-(j+move[l])-1) )%2;
-		}
+void printline(long long  x){
+	for (long long i = 0 ; i< 2*x-1 ; i++){
+		putchar('-');
 	}
-	printf("%lld ",sum);
+	puts("");
 }
-
 int main(int argc, char const *argv[])
 {
-	printf("Enter the number of rows: Enter the number of columns: Enter the probability p value: ");
-	scanf("%lld %lld %lf", &r, &c, &p);
-	int mapp[0x7ffff] = {0,};
-	for (register int i = 0; i < 2*c-1 ; i++) putchar('-');
-	putchar('\n');
-	for (register int i = 0; i < r ; i++){
-		for (register int j = 0 ; j < c ; j++){
-			int result = rand() < p ? 1 : 0;
-			if (result) putchar('*'),putchar(' '); else putchar('.'),putchar(' ');
-			mapp[i] += result<<(c-j-1) ;
-		}
-		putchar('\n');
+	// freopen ("in","r",stdin);
+	long long r,c;
+	double p;
+	printf("Enter the number of rows: \nEnter the number of columns: \nEnter the probability p value: \n");
+	scanf("%lld %lld %lf",&r,&c,&p);
+	int ** mapp = (int ** )malloc( sizeof (int * ) * (r+2));
+	for  (register long long  i = 0 ; i < r + 2 ; i ++){
+		mapp[i] = (int * ) malloc (sizeof (int ) * (c+2));
 	}
-	for (register int i = 0; i < 2*c-1 ; i++) putchar('-');
-	puts("");
-	for (int i = 0 ; i < r; i++){
-		for (int j = 0 ; j < c ; j++){
-			if ((mapp[i]>>(c-j-1)) % 2) {
-				putchar('*'),putchar(' ');
-				continue;
-			}else{
-				pr_number(i,j,mapp);
+	for (register long long i = 0 ; i < r + 2 ; i++){
+		for (register long long j = 0 ; j < c + 2 ; j++ ){
+			mapp[i][j] = 0;
+		}
+	}
+	printline(c);
+	for ( register long long  i = 1; i < r + 1 ; i++){
+		for (register long long  j = 1 ; j < c+1 ; j++){
+			mapp[i][j] = rand()>p ? 0 : 1;
+			printf("%c ",mapp[i][j]?'*':'.');
+		}
+		puts("");
+	}
+	printline(c);
+	for ( register long long  i = 1; i < r + 1 ; i++){
+		for (register long long  j = 1 ; j < c+1 ; j++){
+			if (mapp[i][j]) putchar('*'),putchar(' ');
+			else {
+				printf("%d ", mapp[i-1][j-1]+mapp[i-1][j]+mapp[i-1][j+1]+mapp[i][j-1]+mapp[i][j+1]+mapp[i+1][j-1]+mapp[i+1][j]+mapp[i+1][j+1]);
 			}
 		}
 		puts("");
 	}
-	for (register int i = 0; i < 2*c-1 ; i++) putchar('-');
+
+
+
 	return 0;
 }
