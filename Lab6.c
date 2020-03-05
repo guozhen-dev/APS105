@@ -1,3 +1,10 @@
+/* Name : Guozhen Ding (1005760749)
+ * Lab Submission for APS105H1
+ * Input : two integers for the dim of the map 
+ * Output : the sweeper map and the numbers indicate that how many bombs around a cell
+ * Assumption : All the input from the user is positive value.
+ */
+ 
 #include <stdio.h>
 #include <string.h>
 #include "Lab6.h"
