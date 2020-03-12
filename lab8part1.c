@@ -65,6 +65,7 @@ int main(int argc, char const *argv[])
 				oper_board(mapp,N,hc,xx,yy);
 			}else {
 				printf("Invalid move.\n");
+				printf("%c player wins.\n", cc);
 				break; 
 			}
 		}
