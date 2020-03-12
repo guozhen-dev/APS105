@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#define DEBUG
-#define FILE
+//#define DDEBUG
+//#define FILE
+//#define DEBUG
 
 void prt_mapp(char mapp[][26], int n);
 void init_move(char mapp[][26], int n);
@@ -32,7 +33,7 @@ int main(int argc, char const *argv[])
 	scanf("%d",&N);
 	init_move(mapp,N);
 	printf("Computer plays (B/W): \n");
-	scanf("%c",&cc);
+	scanf(" %c",&cc);
 	char hc = cc=='B'?'W':'B';
 	prt_mapp(mapp,N);
 	is_computers_turn= cc=='B'?1:0;
@@ -50,14 +51,20 @@ int main(int argc, char const *argv[])
 			}
 		}
 		if(is_computers_turn){
+			#ifdef DDEBUG
+			printf("Computer chance\n");
+			#endif
 			comp_oper_board(mapp,N,cc);
 		}else {
-			int xx, yy;
+			char xx, yy;
 			printf("Enter move for colour %c (RowCol): \n", hc);
-			scanf("%c %c",xx,yy);
+			getchar();
+			xx = getchar();
+			yy = getchar();
 			oper_board(mapp,N,hc,xx,yy);
 		}
 		is_computers_turn = !is_computers_turn;
+		prt_mapp(mapp,N);
 	}
 	
 
@@ -84,14 +91,14 @@ void init_move(char mapp[][26], int n){
 	mapp[n/2-1][n/2] = mapp[n/2][n/2-1] = 'B';
 }
 inline bool point_in_bound(int n , int r, int w ){
-	#ifdef DEBUG
+	#ifdef DDEBUG
 	printf("checking %d %d %d\n",n,r,w );
 	#endif
 	return (r>=0 && w>=0 && r<n && w<n);
 }
 int check_legal_direction(char mapp[][26], int n, int row, int col, char che, int d_row, int d_col){
 	if (mapp[row][col] == mapp[row + d_row ][col + d_col] ) {
-		#ifdef DEGUG
+		#ifdef DDEBUG
 		printf("not vaild\n");
 		#endif
 		return false;
@@ -102,7 +109,7 @@ int check_legal_direction(char mapp[][26], int n, int row, int col, char che, in
 	while(point_in_bound(n  ,  row + cnt*d_row  ,  col + cnt*d_col)){
 
 		if (mapp[row + cnt*d_row ][col + cnt*d_col]=='U') {
-			#ifdef DEBUG
+			#ifdef DDEBUG
 			printf("breaking\n");
 			#endif
 			break;
@@ -127,12 +134,12 @@ char * generate_vaild(char mapp[][26], char che, int n ){
 			for (int  k = -1; k <=1 && !checked_vaild; k++){
 				for (int l = -1 ; l <=1 ; l++){
 					if ( (!k) && (!l) ) continue;
-					#ifdef DEBUG
+					#ifdef DDEBUG
 					printf("%d %d %d %d\n",i,j,k,l );
 					#endif
 					if (num=check_legal_direction(mapp,n,i,j,che,k,l)) {
 						checked_vaild = true;
-						#ifdef DEBUG
+						#ifdef DDEBUG
 						printf("correct:%d %d\n", i,j);
 						#endif
 						break;
@@ -143,13 +150,13 @@ char * generate_vaild(char mapp[][26], char che, int n ){
 				*(ret+3*cnt) =(char)'a'+i;
 				*(ret+3*cnt + 1) =(char)'a'+j;
 				*(ret+3*cnt++ + 2) =num;
-				#ifdef DEBUG
+				#ifdef DDEBUG
 				printf("Added\n");
 				#endif
 			}
 		}
 	}
-	#ifdef DEBUG
+	#ifdef DDEBUG
 	printf("cnt = %d\n", cnt);
 	#endif
 	return ret;
@@ -163,12 +170,12 @@ int count_valid(char mapp[][26], char che, int n ){
 			for (int  k = -1; k <=1 && !checked_vaild; k++){
 				for (int l = -1 ; l <=1 ; l++){
 					if ( (!k) && (!l) ) continue;
-					#ifdef DEBUG
+					#ifdef DDEBUG
 					printf("%d %d %d %d\n",i,j,k,l );
 					#endif
 					if (check_legal_direction(mapp,n,i,j,che,k,l)) {
 						checked_vaild = true;
-						#ifdef DEBUG
+						#ifdef DDEBUG
 						printf("correct:%d %d\n", i,j);
 						#endif
 						break;
@@ -180,7 +187,7 @@ int count_valid(char mapp[][26], char che, int n ){
 			}
 		}
 	}
-	#ifdef DEBUG
+	#ifdef DDEBUG
 	printf("cnt = %d\n", cnt);
 	#endif
 	return cnt;
@@ -188,11 +195,11 @@ int count_valid(char mapp[][26], char che, int n ){
 void print_possible_move(char c,char * ans){
 	printf("Available moves for %c:\n",c);
 	int cnt = 0 ;
-	#ifdef DEBUG
+	#ifdef DDEBUG
 	printf ("%p\n",ans);
 	#endif
-	while (*(ans+2*cnt)){
-		printf("%c%c\n",*(ans+2*cnt),*(ans+2*cnt+1));
+	while (*(ans+3*cnt)){
+		printf("%c%c\n",*(ans+3*cnt),*(ans+3*cnt+1));
 		cnt ++;
 	}
 	return;
@@ -203,12 +210,12 @@ bool oper_board(char mapp[][26], int n, char che, int xx, int yy ){
 	bool is_vaild = false;
 	for (int i = -1 ; i <=1 ; i++){
 		for (int j = -1 ; j <= 1 ; j++){
-			#ifdef DEBUG
+			#ifdef DDEBUG
 			printf("checking move of %d %d %c %d %d\n",xx,yy,che,i,j);
 			#endif
 			if ((!i) && (!j)) continue;
 			if (check_legal_direction(mapp,n,xx,yy,che,i,j)){
-				#ifdef DEBUG
+				#ifdef DDEBUG
 				printf("checked move of %d %d %c %d %d\n",xx,yy,che,i,j);
 				#endif
 				flip(mapp, n, xx,yy,che,i,j);
@@ -232,7 +239,21 @@ void flip(char mapp[][26], int n, int row, int col, char che, int d_row, int d_c
 	return;
 }
 void comp_oper_board(char mapp[][26],int n , char che){
-	//to be finished
+	char * available = generate_vaild(mapp,che , n );
+	#ifdef DEBUG
+	print_possible_move(che, available);
+	#endif
+	int cnt = 0 ;
+	int max = -1, max_cnt = 0;
+	while (*(available+3*cnt)){
+		if (*(available+3*cnt+2) > max){
+			max_cnt = cnt;
+			max = *(available+3*cnt+3);
+		}
+		cnt ++;
+	}
+	oper_board(mapp,n,che,*(available+3*max_cnt),*(available+3*max_cnt+1));
+	printf("Computer places %c at %c%c.\n", che, *(available+3*max_cnt),*(available+3*max_cnt+1));
 }
 void final(char mapp[][26],int n ){
 	int B,W = B = 0;
