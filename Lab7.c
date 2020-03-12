@@ -47,9 +47,10 @@ int main(int argc, char const *argv[]){
 	printf("Enter a move: \n");
 	scanf(" %c %c %c", &che,&xx,&yy);
 	if (oper_board(mapp,N,che,xx,yy)) {
+		printf("Valid move.\n");
 		prt_mapp(mapp,N);
 	}else {
-		printf("Invaild move.\n");
+		printf("Invalid move.\n");
 		prt_mapp(mapp,N);
 	}
 	return 0;
@@ -174,7 +175,7 @@ bool oper_board(char mapp[][26], int n, char che, int xx, int yy ){
 				#ifdef DEBUG
 				printf("checked move of %d %d %c %d %d\n",xx,yy,che,i,j);
 				#endif
-				flip(mapp, n,che, xx,yy,i,j);
+				flip(mapp, n, xx,yy,che,i,j);
 				is_vaild = true;
 		}
 		}
@@ -182,6 +183,7 @@ bool oper_board(char mapp[][26], int n, char che, int xx, int yy ){
 	return is_vaild;
 }
 void flip(char mapp[][26], int n, int row, int col, char che, int d_row, int d_col){
+	mapp[row][col]=che;
 	int cnt = 1 ;
 	while (point_in_bound(n,row+cnt*d_row,col+cnt*d_col)){
 		if (mapp[row+cnt*d_row][col+cnt*d_col]!=che){
@@ -189,6 +191,7 @@ void flip(char mapp[][26], int n, int row, int col, char che, int d_row, int d_c
 		}else{
 			break;
 		}
+		cnt++;
 	}
 	return;
 }
