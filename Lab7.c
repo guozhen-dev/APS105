@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#define DEBUG
-#define FILE
+//#define DEBUG
+//#define FILE
 
 void prt_mapp(char mapp[][26], int n);
 void init_move(char mapp[][26], int n);
