@@ -12,7 +12,7 @@ void config_board(char mapp[][26], char che, char xx, char yy );
 bool oper_board(char mapp[][26], int n , char che, int xx, int yy );
 bool point_in_bound(int n , int r, int w );
 int check_legal_direction(char mapp[][26], int n, int row, int col, char che, int d_row, int d_col);
-bool check_vaild(char mapp[][26], char che , char xx, char yy );
+bool check_vaild(char mapp[][26], int n, char che , char xx, char yy );
 char * generate_vaild(char mapp[][26], char che, int n );
 void print_possible_move(char c, char * ans);
 void flip(char mapp[][26], int n, int row, int col, char che, int d_row, int d_col);
@@ -61,7 +61,12 @@ int main(int argc, char const *argv[])
 			getchar();
 			xx = getchar();
 			yy = getchar();
-			oper_board(mapp,N,hc,xx,yy);
+			if(check_vaild(mapp,N,hc,xx,yy)){
+				oper_board(mapp,N,hc,xx,yy);
+			}else {
+				printf("Invalid move.\n");
+				break;
+			}
 		}
 		is_computers_turn = !is_computers_turn;
 		prt_mapp(mapp,N);
@@ -270,4 +275,15 @@ void final(char mapp[][26],int n ){
 	}else{
 		puts("Tie.");
 	}
+}
+bool check_vaild(char mapp[][26], int n, char che , char xx, char yy ){
+	xx-='a';
+	yy-='a';
+	for (int i = -1 ; i <= 1 ; i++){
+		for (int j = -1 ; j <= 1 ; j++){
+			if(!i && !j) continue;
+			if(check_legal_direction(mapp,n,xx,yy,che,i,j)) return true;
+		}
+	}
+	return false;
 }
