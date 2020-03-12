@@ -65,7 +65,7 @@ int main(int argc, char const *argv[])
 				oper_board(mapp,N,hc,xx,yy);
 			}else {
 				printf("Invalid move.\n");
-				break;
+				break; 
 			}
 		}
 		is_computers_turn = !is_computers_turn;
