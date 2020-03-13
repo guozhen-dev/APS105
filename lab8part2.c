@@ -6,6 +6,15 @@
 //#define FILE
 //#define DEBUG
 
+struct available_move{
+	char *list;
+	int size;
+};
+struct pre_value{
+	char x;
+	char y;
+	int value;
+};
 void prt_mapp(char mapp[][26], int n);
 void init_move(char mapp[][26], int n);
 void config_board(char mapp[][26], char che, char xx, char yy );
@@ -13,13 +22,19 @@ bool oper_board(char mapp[][26], int n , char che, int xx, int yy );
 bool point_in_bound(int n , int r, int w );
 int check_legal_direction(char mapp[][26], int n, int row, int col, char che, int d_row, int d_col);
 bool check_vaild(char mapp[][26], int n, char che , char xx, char yy );
-char * generate_vaild(char mapp[][26], char che, int n );
+struct available_move generate_vaild(char mapp[][26], char che, int n );
 void print_possible_move(char c, char * ans);
 void flip(char mapp[][26], int n, int row, int col, char che, int d_row, int d_col);
 void comp_oper_board(char mapp[][26],int n , char che);
 int count_valid(char mapp[][26], char che, int n );
 void final(char mapp[][26],int n );
+struct pre_value pred(char mapp[][26],int n , char che ,int d );
+char opposite(char a ){
+	return a=='B'?'W':'B';
+}
 
+
+const int predict_depth = 3;
 int main(int argc, char const *argv[]){
 	#ifdef FILE 
 	freopen("in","r",stdin);
@@ -127,7 +142,7 @@ int check_legal_direction(char mapp[][26], int n, int row, int col, char che, in
 	}
 	return is_vaild?cnt:0;
 }
-char * generate_vaild(char mapp[][26], char che, int n ){
+struct available_move generate_vaild(char mapp[][26], char che, int n ){
 	char * ret = (char *) malloc(sizeof(char) * 3 * 26 * 26);
 	int cnt = 0 ;
 	memset(ret,0,sizeof(char) * 3 * 26 * 26);
@@ -142,7 +157,7 @@ char * generate_vaild(char mapp[][26], char che, int n ){
 					#ifdef DDEBUG
 					printf("%d %d %d %d\n",i,j,k,l );
 					#endif
-					if (num=check_legal_direction(mapp,n,i,j,che,k,l)) {
+					if ((num=check_legal_direction(mapp,n,i,j,che,k,l)) != 0) { // '=' in purpose dont't change !!!!! 
 						checked_vaild = true;
 						#ifdef DDEBUG
 						printf("correct:%d %d\n", i,j);
@@ -164,7 +179,10 @@ char * generate_vaild(char mapp[][26], char che, int n ){
 	#ifdef DDEBUG
 	printf("cnt = %d\n", cnt);
 	#endif
-	return ret;
+	struct available_move ret_pack;
+	ret_pack.list = ret;
+	ret_pack.size = cnt;
+	return ret_pack;
 }
 int count_valid(char mapp[][26], char che, int n ){
 	int cnt = 0 ;
@@ -244,25 +262,11 @@ void flip(char mapp[][26], int n, int row, int col, char che, int d_row, int d_c
 	return;
 }
 void comp_oper_board(char mapp[][26],int n , char che){
-	char * available = generate_vaild(mapp,che , n );
-	#ifdef DEBUG
-	print_possible_move(che, available);
-	#endif
-	int cnt = 0 ;
-	int max = -1, max_cnt = 0;
-	while (*(available+3*cnt)){
-		if (*(available+3*cnt+2) > max){
-			max_cnt = cnt;
-			max = *(available+3*cnt+3);
-		}
-		cnt ++;
-	}
-	oper_board(mapp,n,che,*(available+3*max_cnt),*(available+3*max_cnt+1));
-	printf("Computer places %c at %c%c.\n", che, *(available+3*max_cnt),*(available+3*max_cnt+1));
-	free(available);
+	struct available_move ans = generate_vaild(mapp,che,n);
+	pred(mapp,n,che,predict_depth);
 }
 void final(char mapp[][26],int n ){
-	int B,W = B = 0;
+	int B=0,W = 0;
 	for (int i = 0; i < n ; i++ ){
 		for(int j = 0 ; j < n ; j++){
 			if (mapp[i][j]=='B') B++;
@@ -277,6 +281,17 @@ void final(char mapp[][26],int n ){
 		puts("Tie.");
 	}
 }
+int evaluate(char mapp[][26], int n, int che){
+	int B = 0 , W = 0 ;
+	for(int i = 0; i < n ; i++){
+		for (int j = 0 ; j < n ; j++){
+			if (mapp[i][j]=='B') B++;
+			if (mapp[i][j]=='W') W++;
+		}
+	}
+	int delta = B-W;
+	return che=='B'?delta:-delta;
+}
 bool check_vaild(char mapp[][26], int n, char che , char xx, char yy ){
 	xx-='a';
 	yy-='a';
@@ -287,4 +302,18 @@ bool check_vaild(char mapp[][26], int n, char che , char xx, char yy ){
 		}
 	}
 	return false;
+}
+
+int pred(char mapp[][26],int n , char che ,int d ){
+	if (!d) {
+		return evaluate(mapp,n,che);
+	}
+	struct available_move ans = generate_vaild(mapp,che,n);
+	for (int i = 0; i < ans.size; i ++){
+		char cp_map[26][26];
+		memcpy(cp_map,mapp,sizeof(cp_map));
+		oper_board(cp_map,n,che,*(ans.list + 3*i),*(ans.list+3*i +1));
+
+	}
+
 }
