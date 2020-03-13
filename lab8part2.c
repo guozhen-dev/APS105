@@ -10,7 +10,7 @@ struct available_move{
 	char *list;
 	int size;
 };
-struct pre_value{
+struct node{
 	char x;
 	char y;
 	int value;
@@ -25,16 +25,17 @@ bool check_vaild(char mapp[][26], int n, char che , char xx, char yy );
 struct available_move generate_vaild(char mapp[][26], char che, int n );
 void print_possible_move(char c, char * ans);
 void flip(char mapp[][26], int n, int row, int col, char che, int d_row, int d_col);
-void comp_oper_board(char mapp[][26],int n , char che);
+int comp_oper_board(char mapp[][26],int n , char che,int depth);
 int count_valid(char mapp[][26], char che, int n );
 void final(char mapp[][26],int n );
-struct pre_value pred(char mapp[][26],int n , char che ,int d );
+struct node get_max(char mapp[][26],int n ,char che, struct available_move avail,int depth);
+struct node get_min(char mapp[][26],int n , char che , struct available_move avail,int depth);
 char opposite(char a ){
 	return a=='B'?'W':'B';
 }
 
-
-const int predict_depth = 3;
+char computer;
+const int predict_depth = 4;
 int main(int argc, char const *argv[]){
 	#ifdef FILE 
 	freopen("in","r",stdin);
@@ -49,6 +50,7 @@ int main(int argc, char const *argv[]){
 	printf("Computer plays (B/W): \n");
 	scanf(" %c",&cc);
 	char hc = cc=='B'?'W':'B';
+	computer = cc;
 	prt_mapp(mapp,N);
 	is_computers_turn= cc=='B'?1:0;
 	while(true){
@@ -68,7 +70,7 @@ int main(int argc, char const *argv[]){
 			#ifdef DDEBUG
 			printf("Computer chance\n");
 			#endif
-			comp_oper_board(mapp,N,cc);
+			comp_oper_board(mapp,N,cc,predict_depth);
 		}else {
 			char xx, yy;
 			printf("Enter move for colour %c (RowCol): \n", hc);
@@ -101,7 +103,10 @@ void prt_mapp(char mapp[][26], int n){
 	for (register int i = 0 ; i < n ; i++){
 		printf("%c ", 'a'+ i);
 		for (register int j = 0 ; j < n ; j++){
-			printf("%c",mapp[i][j]);
+			// printf("%c",mapp[i][j]);
+			if(mapp[i][j]=='U') printf(" ");
+			if(mapp[i][j]=='B') printf("X");
+			if(mapp[i][j]=='W') printf("O");
 		}
 		puts("");
 	}
@@ -261,9 +266,23 @@ void flip(char mapp[][26], int n, int row, int col, char che, int d_row, int d_c
 	}
 	return;
 }
-void comp_oper_board(char mapp[][26],int n , char che){
-	struct available_move ans = generate_vaild(mapp,che,n);
-	pred(mapp,n,che,predict_depth);
+int evaluate(char mapp[][26], int n, int che){
+	int B = 0 , W = 0 ;
+	for(int i = 0; i < n ; i++){
+		for (int j = 0 ; j < n ; j++){
+			if (mapp[i][j]=='B') B++;
+			if (mapp[i][j]=='W') W++;
+		}
+	}
+	int delta = B-W;
+	return che=='B'?delta:-delta;
+}
+int comp_oper_board(char mapp[][26],int n , char che,int depth ){
+	if (depth==0) return evaluate(mapp,n,computer);
+	struct available_move available = generate_vaild(mapp, che, n);
+	struct node decision = get_max(mapp,n,che,available,depth);
+	printf("Computer places %c at %c%c.\n", che, decision.x ,decision.y);
+	oper_board(mapp, n, che, decision.x, decision.y);
 }
 void final(char mapp[][26],int n ){
 	int B=0,W = 0;
@@ -281,17 +300,7 @@ void final(char mapp[][26],int n ){
 		puts("Tie.");
 	}
 }
-int evaluate(char mapp[][26], int n, int che){
-	int B = 0 , W = 0 ;
-	for(int i = 0; i < n ; i++){
-		for (int j = 0 ; j < n ; j++){
-			if (mapp[i][j]=='B') B++;
-			if (mapp[i][j]=='W') W++;
-		}
-	}
-	int delta = B-W;
-	return che=='B'?delta:-delta;
-}
+
 bool check_vaild(char mapp[][26], int n, char che , char xx, char yy ){
 	xx-='a';
 	yy-='a';
@@ -303,17 +312,57 @@ bool check_vaild(char mapp[][26], int n, char che , char xx, char yy ){
 	}
 	return false;
 }
-
-int pred(char mapp[][26],int n , char che ,int d ){
-	if (!d) {
-		return evaluate(mapp,n,che);
+struct node get_max(char mapp[][26],int n , char che , struct available_move avail,int depth){
+	if (!depth){
+		struct node ret ;
+		ret.x = 0 ;
+		ret.y = 0 ;
+		ret.value = evaluate(mapp, n,che);
+		return ret;
 	}
-	struct available_move ans = generate_vaild(mapp,che,n);
-	for (int i = 0; i < ans.size; i ++){
-		char cp_map[26][26];
-		memcpy(cp_map,mapp,sizeof(cp_map));
-		oper_board(cp_map,n,che,*(ans.list + 3*i),*(ans.list+3*i +1));
-
+	struct node ret ;
+	int max = -0x7fffff;
+	int max_index = 0;
+	for (int i = 0 ; i < avail.size ; i++){
+		char cp_mapp[26][26];
+		memcpy(cp_mapp,mapp,sizeof(cp_mapp));
+		oper_board(cp_mapp,n,che,*(avail.list+3*i), *(avail.list + 3*i + 1 ) );
+		struct available_move available = generate_vaild(cp_mapp,opposite(che),n);
+		int value = get_min(cp_mapp,n,che,available,depth-1).value;
+		if (value >= max){
+			max = value;
+			max_index = i ;
+		}
 	}
-
+	ret.x=*(avail.list+3*max_index);
+	ret.y=*(avail.list+3*max_index+1);
+	ret.value = max;
+	return ret ;
+}
+struct node get_min(char mapp[][26],int n , char che , struct available_move avail,int depth){
+	if (!depth){
+		struct node ret ;
+		ret.x = 0 ;
+		ret.y = 0 ;
+		ret.value = evaluate(mapp, n,che);
+		return ret;
+	}
+	struct node ret ;
+	int min = 0x7fffff;
+	int min_index = 0;
+	for (int i = 0 ; i < avail.size ; i++){
+		char cp_mapp[26][26];
+		memcpy(cp_mapp,mapp,sizeof(cp_mapp));
+		oper_board(cp_mapp,n,che,*(avail.list+3*i), *(avail.list + 3*i + 1 ) );
+		struct available_move available = generate_vaild(cp_mapp,opposite(che),n);
+		int value = get_max(cp_mapp,n,che,available,depth-1).value;
+		if (value <= min){
+			min = value;
+			min_index = i ;
+		}
+	}
+	ret.x=*(avail.list+3*min_index);
+	ret.y=*(avail.list+3*min_index+1);
+	ret.value = min;
+	return ret ;
 }
