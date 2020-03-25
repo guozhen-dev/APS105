@@ -36,7 +36,7 @@ char opposite(char a ){
 }
 
 char computer;
-const int predict_depth = 3;
+const int predict_depth = 4;
 int main(int argc, char const *argv[]){
 	#ifdef FILE 
 	freopen("in","r",stdin);
@@ -78,11 +78,11 @@ int main(int argc, char const *argv[]){
 			getchar();
 			xx = getchar();
 			yy = getchar();
-			// findSmartestMove(mapp, N, hc, &xx, &yy);
+			// findSmarterMove(mapp, N, hc, &xx, &yy);
 			// printf("Testing AI move (row, col): %c%c\n", xx + 'a', yy + 'a');
 			// xx+='a';
 			// yy+='a';
-			// printf("%c %c",xx,yy);
+
 			if(check_vaild(mapp,N,hc,xx,yy)){
 				oper_board(mapp,N,hc,xx,yy);
 			}else {
@@ -109,10 +109,10 @@ void prt_mapp(char mapp[][26], int n){
 	for (register int i = 0 ; i < n ; i++){
 		printf("%c ", 'a'+ i);
 		for (register int j = 0 ; j < n ; j++){
-			printf("%c",mapp[i][j]);
-			// if(mapp[i][j]=='U') printf("U");
-			// if(mapp[i][j]=='B') printf("B");
-			// if(mapp[i][j]=='W') printf("O");
+			// printf("%c",mapp[i][j]);
+			if(mapp[i][j]=='U') printf(".");
+			if(mapp[i][j]=='B') printf("X");
+			if(mapp[i][j]=='W') printf("O");
 		}
 		puts("");
 	}
@@ -285,11 +285,11 @@ int evaluate(char mapp[][26], int n, int che){
 	for(int i = 0; i < n ; i++){
 		for (int j = 0 ; j < n ; j++){
 			if (mapp[i][j]=='B') B+=table[i][j];
-			if (mapp[i][j]=='W') W+=table[i][j];
+			if (mapp[i][j]=='W') W+=2*table[i][j];
 		}
 	}
-	int delta = B-W+50*count_valid(mapp,computer,n)-100*count_valid(mapp,opposite(computer),n);
-	// printf("%s\n", );
+	int delta = B-W+20*count_valid(mapp,'B',n)-20*count_valid(mapp,'W',n);
+	// printf("%d\n",delta );
 	return computer=='B'?delta:-delta;
 }
 
