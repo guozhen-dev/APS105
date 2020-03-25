@@ -36,7 +36,7 @@ char opposite(char a ){
 }
 
 char computer;
-const int predict_depth = 6;
+const int predict_depth = 3;
 int main(int argc, char const *argv[]){
 	#ifdef FILE 
 	freopen("in","r",stdin);
@@ -74,14 +74,15 @@ int main(int argc, char const *argv[]){
 			comp_oper_board(mapp,N,cc,predict_depth);
 		}else {
 			int xx=0, yy=0;
-			// printf("Enter move for colour %c (RowCol): \n", hc);
-			// getchar();
-			// xx = getchar();
-			// yy = getchar();
-			findSmartestMove(mapp, N, hc, &xx, &yy);
-			printf("Testing AI move (row, col): %c%c\n", xx + 'a', yy + 'a');
-			xx+='a';
-			yy+='a';
+			printf("Enter move for colour %c (RowCol): \n", hc);
+			getchar();
+			xx = getchar();
+			yy = getchar();
+			// findSmartestMove(mapp, N, hc, &xx, &yy);
+			// printf("Testing AI move (row, col): %c%c\n", xx + 'a', yy + 'a');
+			// xx+='a';
+			// yy+='a';
+			// printf("%c %c",xx,yy);
 			if(check_vaild(mapp,N,hc,xx,yy)){
 				oper_board(mapp,N,hc,xx,yy);
 			}else {
@@ -287,8 +288,8 @@ int evaluate(char mapp[][26], int n, int che){
 			if (mapp[i][j]=='W') W+=table[i][j];
 		}
 	}
-	int delta = B-W;
-
+	int delta = B-W+50*count_valid(mapp,computer,n)-100*count_valid(mapp,opposite(computer),n);
+	// printf("%s\n", );
 	return computer=='B'?delta:-delta;
 }
 
