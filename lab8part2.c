@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "lab8part2lib.h"
 //#define DDEBUG
 //#define FILE
 //#define DEBUG
@@ -72,11 +73,16 @@ int main(int argc, char const *argv[]){
 			#endif
 			comp_oper_board(mapp,N,cc,predict_depth);
 		}else {
-			char xx, yy;
+			int xx=0, yy=0;
 			printf("Enter move for colour %c (RowCol): \n", hc);
 			getchar();
 			xx = getchar();
 			yy = getchar();
+			// findSmarterMove(mapp, N, hc, &xx, &yy);
+			// printf("Testing AI move (row, col): %c%c\n", xx + 'a', yy + 'a');
+			// xx+='a';
+			// yy+='a';
+
 			if(check_vaild(mapp,N,hc,xx,yy)){
 				oper_board(mapp,N,hc,xx,yy);
 			}else {
@@ -103,10 +109,17 @@ void prt_mapp(char mapp[][26], int n){
 	for (register int i = 0 ; i < n ; i++){
 		printf("%c ", 'a'+ i);
 		for (register int j = 0 ; j < n ; j++){
+<<<<<<< HEAD
 			printf("%c",mapp[i][j]);
 			// if(mapp[i][j]=='U') printf(" ");
 			// if(mapp[i][j]=='B') printf("X");
 			// if(mapp[i][j]=='W') printf("O");
+=======
+			// printf("%c",mapp[i][j]);
+			if(mapp[i][j]=='U') printf(".");
+			if(mapp[i][j]=='B') printf("X");
+			if(mapp[i][j]=='W') printf("O");
+>>>>>>> 02f8e79e3ee25255df79c7c91a0a8db1298b23c2
 		}
 		puts("");
 	}
@@ -267,22 +280,36 @@ void flip(char mapp[][26], int n, int row, int col, char che, int d_row, int d_c
 	return;
 }
 int evaluate(char mapp[][26], int n, int che){
+	int table[8][8] ={{500,-25,10,5,5,10,-25,500},
+ 					{-25,-45,1,1,1,1,-45,-25},
+ 					{10,1,3,2,2,3,1,10},
+ 					{5,1,2,1,1,2,1,5},
+ 					{5,1,2,1,1,2,1,5},
+ 					{10,1,3,2,2,3,1,10},
+ 					{-25,-45,1,1,1,1,-45,-25},
+ 					{500,-25,10,5,5,10,-25,500}};
 	int B = 0 , W = 0 ;
 	for(int i = 0; i < n ; i++){
 		for (int j = 0 ; j < n ; j++){
-			if (mapp[i][j]=='B') B++;
-			if (mapp[i][j]=='W') W++;
+			if (mapp[i][j]=='B') B+=table[i][j];
+			if (mapp[i][j]=='W') W+=2*table[i][j];
 		}
 	}
-	int delta = B-W;
-	return che=='B'?delta:-delta;
+	int delta = B-W+20*count_valid(mapp,'B',n)-20*count_valid(mapp,'W',n);
+	// printf("%d\n",delta );
+	return computer=='B'?delta:-delta;
 }
+
+/*
+
+*/
 int comp_oper_board(char mapp[][26],int n , char che,int depth ){
 	if (depth==0) return evaluate(mapp,n,computer);
 	struct available_move available = generate_vaild(mapp, che, n);
 	struct node decision = get_max(mapp,n,che,available,depth);
 	printf("Computer places %c at %c%c.\n", che, decision.x ,decision.y);
 	oper_board(mapp, n, che, decision.x, decision.y);
+	return 0;
 }
 void final(char mapp[][26],int n ){
 	int B=0,W = 0;
@@ -329,7 +356,7 @@ struct node get_max(char mapp[][26],int n , char che , struct available_move ava
 		oper_board(cp_mapp,n,che,*(avail.list+3*i), *(avail.list + 3*i + 1 ) );
 		struct available_move available = generate_vaild(cp_mapp,opposite(che),n);
 		int value = get_min(cp_mapp,n,che,available,depth-1).value;
-		if (value >= max){
+		if (value > max){
 			max = value;
 			max_index = i ;
 		}
@@ -356,7 +383,7 @@ struct node get_min(char mapp[][26],int n , char che , struct available_move ava
 		oper_board(cp_mapp,n,che,*(avail.list+3*i), *(avail.list + 3*i + 1 ) );
 		struct available_move available = generate_vaild(cp_mapp,opposite(che),n);
 		int value = get_max(cp_mapp,n,che,available,depth-1).value;
-		if (value <= min){
+		if (value < min){
 			min = value;
 			min_index = i ;
 		}
