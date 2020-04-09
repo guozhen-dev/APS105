@@ -39,7 +39,7 @@ void rank(){
 		ranked_ilist[size] = &ilist[size];
 		size++;
 	}
-	printf("size = %d\n", size);
+	// printf("size = %d\n", size);
 	qsort(ranked_ilist,size,sizeof(ranked_ilist[0]),cmp);
 	for (int i = 0 ; i< size ; i++){
 		printf("%d: %s\n",i,ranked_ilist[i]->name+1 );
@@ -69,7 +69,7 @@ int main(int argc, char const *argv[]){
 	}
 
 	while (1){
-	printf("\n\nEnter a command by letter\n1. List all Recipes\n2. Print a Recipe\n3. List All Recipes with a given ingredient\n4. List All Ingredients in alphabetical order\n5. Exit the program\nGive input:");
+	printf("\n\nEnter a command by number\n1. List all Recipes\n2. Print a Recipe\n3. List All Recipes with a given ingredient\n4. List All Ingredients in alphabetical order\n5. Exit the program\nGive input:");
 	int CH;
 	scanf("%d",&CH);
 	if (CH == 1){
