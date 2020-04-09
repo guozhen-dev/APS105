@@ -110,9 +110,6 @@ void prt_mapp(char mapp[][26], int n){
 		printf("%c ", 'a'+ i);
 		for (register int j = 0 ; j < n ; j++){
 			printf("%c",mapp[i][j]);
-			// if(mapp[i][j]=='U') printf(" ");
-			// if(mapp[i][j]=='B') printf("X");
-			// if(mapp[i][j]=='W') printf("O");
 		}
 		puts("");
 	}
